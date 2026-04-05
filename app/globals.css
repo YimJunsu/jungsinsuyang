@@ -24,3 +24,60 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Smoking - smoke particle animations */
+@keyframes smokeRise1 {
+  0%   { transform: translateY(0) scale(0.3); opacity: 0.85; }
+  40%  { opacity: 0.5; }
+  100% { transform: translateY(-160px) translateX(-22px) scale(4.5); opacity: 0; }
+}
+@keyframes smokeRise2 {
+  0%   { transform: translateY(0) scale(0.4); opacity: 0.7; }
+  40%  { opacity: 0.4; }
+  100% { transform: translateY(-140px) translateX(28px) scale(3.8); opacity: 0; }
+}
+@keyframes smokeRise3 {
+  0%   { transform: translateY(0) scale(0.3); opacity: 0.9; }
+  40%  { opacity: 0.6; }
+  100% { transform: translateY(-190px) translateX(-8px) scale(5); opacity: 0; }
+}
+
+/* Smoking - ember pulse */
+@keyframes flamePulse {
+  0%   { opacity: 0.7; transform: scaleX(1) scaleY(1); }
+  100% { opacity: 1;   transform: scaleX(1.18) scaleY(0.82); }
+}
+
+/* Hamster - speed lines (opacity-based, reliable for SVG) */
+@keyframes speedLinePulse {
+  0%   { opacity: 0.85; }
+  60%  { opacity: 0.35; }
+  100% { opacity: 0; }
+}
+
+/* Checkbox race - next target pulse */
+@keyframes nextPulse {
+  0%   { box-shadow: 0 0 0 0   rgba(74,222,128,0.7); }
+  60%  { box-shadow: 0 0 0 8px rgba(74,222,128,0);   }
+  100% { box-shadow: 0 0 0 0   rgba(74,222,128,0);   }
+}
+
+/* Loading - spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Hacker - cursor blink */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Hamster - speech bubble pop */
+@keyframes bubblePop {
+  0%   { opacity: 0; transform: scale(0.6) translateY(8px); }
+  12%  { opacity: 1; transform: scale(1.08) translateY(-3px); }
+  22%  { transform: scale(1) translateY(0); }
+  72%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
