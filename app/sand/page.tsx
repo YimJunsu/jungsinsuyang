@@ -14,7 +14,7 @@ const COLORS = [
 export default function SandPage() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [currentColor, setCurrentColor] = useState(COLORS[0].value);
-    const grid = useRef<string[][]>([]);
+    const grid = useRef<(string | null)[][]>([]);
     const width = 200; // 시뮬레이션 해상도
     const height = 150;
 
