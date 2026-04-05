@@ -5,22 +5,25 @@ import {
   Wind, Cigarette, Gauge, Music, CheckSquare,
   Terminal, Loader2, CircleDot, Orbit,
   Hammer, ChevronRight, Hourglass, Flame,
-  CloudRain, Grid3X3, Zap
+  CloudRain, Grid3X3, Zap, PawPrint
 } from 'lucide-react';
 
 const PAGES = [
-  { href: '/sand', icon: Hourglass, title: '영겁의 모래시계', desc: '당신의 시간이 의미 없이 퇴적되는 곳', bg: 'from-[#1a1a05] to-[#050505]', accent: '#d4af37' },
-  { href: '/smash', icon: Hammer, title: '파괴적 해방', desc: '문명이라는 껍데기를 부수고 본능으로', bg: 'from-[#1a0505] to-[#050505]', accent: '#ff4d4d' },
-  { href: '/blackhole', icon: Orbit, title: '심연의 아가리', desc: '고민을 던져라, 소멸은 영원할지니', bg: 'from-[#0a051a] to-[#050505]', accent: '#a855f7' },
-  { href: '/hacker', icon: Terminal, title: '유령 신호 침투', desc: '가상 세계의 중추를 장악하는 쾌락', bg: 'from-[#051a05] to-[#050505]', accent: '#00ff41' },
-  { href: '/candle', icon: Flame, title: '최후의 발악', desc: '꺼지기 직전 가장 찬란한 의식', bg: 'from-[#1a0e05] to-[#050505]', accent: '#f97316' },
-  { href: '/bubble', icon: CircleDot, title: '강박적 파열', desc: '터뜨려야만 하는 저주받은 손가락', bg: 'from-[#05101a] to-[#050505]', accent: '#3b82f6' },
-  { href: '/rain', icon: CloudRain, title: '잿빛 멜랑콜리', desc: '유리창 너머로 씻겨 내려가는 자아', bg: 'from-[#0a1a1f] to-[#050505]', accent: '#22d3ee' },
-  { href: '/airconditioner', icon: Wind, title: '인공적 영점', desc: '차갑고 건조한 기계적 안식의 실현', bg: 'from-[#05161a] to-[#050505]', accent: '#06b6d4' },
-  { href: '/prison', icon: Grid3X3, title: '질서의 기하학', desc: '완벽한 사각형 안에 갇힌 영혼들', bg: 'from-[#111827] to-[#050505]', accent: '#94a3b8' },
-  { href: '/hamster', icon: Gauge, title: '시시포스의 굴레', desc: '달려도 닿을 수 없는 목적지를 향해', bg: 'from-[#1a1205] to-[#050505]', accent: '#eab308' },
-  { href: '/checkbox', icon: CheckSquare, title: '강박의 연옥', desc: '채워지지 않는 공란의 공포', bg: 'from-[#051a0b] to-[#050505]', accent: '#22c55e' },
-  { href: '/loading', icon: Loader2, title: '약속된 유토피아', desc: '곧 도착할 행복을 위한 영원한 대기', bg: 'from-[#18181b] to-[#050505]', accent: '#71717a' },
+  { href: '/sand', icon: Hourglass, title: '영겁의 모래시계', desc: '모래 구경하다 인생이 모래가 됨', bg: 'from-[#1a1a05] to-[#050505]', accent: '#d4af37' },
+  { href: '/smash', icon: Hammer, title: '합법적 기물파손', desc: '현실에서 못 부수는 걸 여기서라도', bg: 'from-[#1a0505] to-[#050505]', accent: '#ff4d4d' },
+  { href: '/blackhole', icon: Orbit, title: '우주 쓰레기통', desc: '고민을 집어넣으면 우주가 처리해 줌 (환불 불가)', bg: 'from-[#0a051a] to-[#050505]', accent: '#a855f7' },
+  { href: '/hacker', icon: Terminal, title: '해커인 척 타자 연습', desc: '초록 글씨만 봐도 개발자가 된 기분', bg: 'from-[#051a05] to-[#050505]', accent: '#00ff41' },
+  { href: '/candle', icon: Flame, title: '촛불 입김 테러', desc: '후~ 하면 꺼지는데 왜 계속 켜지냐고', bg: 'from-[#1a0e05] to-[#050505]', accent: '#f97316' },
+  { href: '/bubble', icon: CircleDot, title: '버블랩 중독 클리닉', desc: '손가락이 터뜨리길 멈추면 치료 완료 (못 멈춤)', bg: 'from-[#05101a] to-[#050505]', accent: '#3b82f6' },
+  { href: '/rain', icon: CloudRain, title: '감성 우울 대리 서비스', desc: '직접 우울할 시간 없을 때 위탁 운영 가능', bg: 'from-[#0a1a1f] to-[#050505]', accent: '#22d3ee' },
+  { href: '/airconditioner', icon: Wind, title: '에어컨 ASMR 성지', desc: '전기세 걱정 없는 쿨함, 집주인 모름', bg: 'from-[#05161a] to-[#050505]', accent: '#06b6d4' },
+  { href: '/prison', icon: Grid3X3, title: '사각형 감옥 탈출 불가', desc: '탈출구는 딱 하나 — 뒤로가기 버튼', bg: 'from-[#111827] to-[#050505]', accent: '#94a3b8' },
+  { href: '/hamster', icon: Gauge, title: '쳇바퀴 월요일 시뮬레이터', desc: '열심히 달려도 제자리, 월급날은 안 옴', bg: 'from-[#1a1205] to-[#050505]', accent: '#eab308' },
+  { href: '/checkbox', icon: CheckSquare, title: '체크리스트 중독 재활원', desc: '체크해도 또 생김, 입원 권장', bg: 'from-[#051a0b] to-[#050505]', accent: '#22c55e' },
+  { href: '/loading', icon: Loader2, title: '행복 로딩 중...', desc: '곧 도착합니다 — 2019년부터 같은 말 중', bg: 'from-[#18181b] to-[#050505]', accent: '#71717a' },
+  { href: '/smoking', icon: Cigarette, title: '가상 흡연실', desc: '폐는 멀쩡, 죄책감만 0원에 드립니다', bg: 'from-[#1a0e06] to-[#050505]', accent: '#fb923c' },
+  { href: '/note', icon: Music, title: '기기 기울기 오케스트라', desc: '폰을 기울이면 음악이 됩니다. 아마도', bg: 'from-[#0d0a1a] to-[#050505]', accent: '#c084fc' },
+  { href: '/animal', icon: PawPrint, title: '롱동물 전시관', desc: '롱독·롱캣·롱카우·롱몽키 — 길이만큼 정신줄 분리', bg: 'from-[#051a0a] to-[#050505]', accent: '#4ade80' },
 ] as const;
 
 export default function Home() {
@@ -39,8 +42,8 @@ export default function Home() {
             <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600">수양</span>
           </h1>
           <p className="max-w-md mx-auto text-zinc-400 text-xs md:text-sm font-medium tracking-[0.1em] leading-relaxed uppercase">
-            이곳에서 당신의 고통은 데이터가 되고,<br />
-            번뇌는 픽셀이 되어 사라집니다.
+            의사도 몰랐던 15가지 스트레스 해소법.<br />
+            부작용: 시간 낭비, 무한 재방문.
           </p>
         </header>
 
