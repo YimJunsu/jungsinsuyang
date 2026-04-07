@@ -524,27 +524,53 @@ export default function SmokingContent() {
 
       {/* ── Done overlay ───────────────────────── */}
       {isDone && (
-        <div
-          className="absolute inset-0 flex flex-col items-center justify-center gap-6"
-          style={{ background: 'rgba(0,0,0,0.72)', zIndex: 20 }}
-          onClick={e => e.stopPropagation()}
-        >
-          <p className="text-3xl font-bold" style={{ color: '#f0e5cc' }}>
-            담배를 다 피웠습니다 💨
-          </p>
-          <p className="text-sm" style={{ color: 'rgba(165,145,105,0.82)' }}>
-            건강을 위해 금연을 권장합니다
-          </p>
-          <button
-            onClick={reset}
-            className="mt-2 px-10 py-3 rounded-2xl text-sm font-semibold text-white"
-            style={{ background: '#383838' }}
-            onMouseOver={e => (e.currentTarget.style.background = '#505050')}
-            onMouseOut={e =>  (e.currentTarget.style.background = '#383838')}
+          <div
+              className="absolute inset-0 flex flex-col items-center justify-center gap-6"
+              style={{ background: 'rgba(0,0,0,0.72)', zIndex: 20 }}
+              onClick={e => e.stopPropagation()}
           >
-            다시 피우기 (Reset)
-          </button>
-        </div>
+            <p className="text-3xl font-bold" style={{ color: '#f0e5cc' }}>
+              담배를 다 피웠습니다 💨
+            </p>
+            <p className="text-sm" style={{ color: 'rgba(165,145,105,0.82)' }}>
+              건강을 위해 금연을 권장합니다
+            </p>
+            <div className="flex gap-3 mt-2">
+              {/* 다시 피우기 버튼 */}
+              <button
+                  onClick={reset}
+                  className="px-6 py-2 rounded-2xl text-sm font-semibold text-white"
+                  style={{ background: '#383838' }}
+                  onMouseOver={e => (e.currentTarget.style.background = '#505050')}
+                  onMouseOut={e =>  (e.currentTarget.style.background = '#383838')}
+              >
+                다시 피우기
+              </button>
+
+              {/* 공유하기 버튼 */}
+              <button
+                  onClick={async () => {
+                    if (navigator.share) {
+                      try {
+                        await navigator.share({
+                          text: '너도 한대펴라',
+                        });
+                      } catch (err) {
+                        console.error('공유 실패:', err);
+                      }
+                    } else {
+                      alert('이 브라우저는 공유를 지원하지 않습니다 😢');
+                    }
+                  }}
+                  className="px-6 py-2 rounded-2xl text-sm font-semibold text-white"
+                  style={{ background: '#1c88ff' }}
+                  onMouseOver={e => (e.currentTarget.style.background = '#3399ff')}
+                  onMouseOut={e =>  (e.currentTarget.style.background = '#1c88ff')}
+              >
+                공유하기
+              </button>
+            </div>
+          </div>
       )}
     </div>
   );

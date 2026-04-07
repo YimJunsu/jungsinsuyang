@@ -5,7 +5,7 @@ import {
   Wind, Cigarette, Gauge, Music, CheckSquare,
   Terminal, Loader2, CircleDot, Orbit,
   Hammer, ChevronRight, Hourglass, Flame,
-  CloudRain, Grid3X3, Zap, PawPrint
+  CloudRain, Grid3X3, Zap, PawPrint, Bug
 } from 'lucide-react';
 
 const PAGES = [
@@ -24,6 +24,7 @@ const PAGES = [
   { href: '/smoking', icon: Cigarette, title: '가상 흡연실', desc: '폐는 멀쩡, 죄책감만 0원에 드립니다', bg: 'from-[#1a0e06] to-[#050505]', accent: '#fb923c' },
   { href: '/note', icon: Music, title: '기기 기울기 오케스트라', desc: '폰을 기울이면 음악이 됩니다. 아마도', bg: 'from-[#0d0a1a] to-[#050505]', accent: '#c084fc' },
   { href: '/animal', icon: PawPrint, title: '롱동물 전시관', desc: '롱독·롱캣·롱카우·롱몽키 — 길이만큼 정신줄 분리', bg: 'from-[#051a0a] to-[#050505]', accent: '#4ade80' },
+  { href: '/cockroach', icon: Bug, title: '바선생이랑 놀기', desc: '악- 더러워. 누르면 발악함', bg: 'from-[#1a0e04] to-[#050505]', accent: '#d4a00a' },
 ] as const;
 
 export default function Home() {
