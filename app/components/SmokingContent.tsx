@@ -15,6 +15,13 @@ const FILTER_TOP = BODY_H + EMBER_H + BAND_H; // 209
 const TOTAL_BURN_SECONDS = 120; // 2 minutes total
 const ASH_DROP_TRIGGER   = 36;  // px of visible ash before drop
 
+type Brand = 'marlboro' | 'mild-seven' | 'electronic';
+const BRANDS: { id: Brand; label: string; color: string }[] = [
+    { id: 'marlboro',   label: '말보루',   color: '#ef4444' },
+    { id: 'mild-seven', label: '마일드세븐', color: '#3b82f6' },
+    { id: 'electronic', label: '전자담배',   color: '#10b981' },
+];
+
 /* ─── Types ───────────────────────────────────────────── */
 interface Particle {
     x: number; y: number;
@@ -41,8 +48,10 @@ export default function SmokingContent() {
     const [isMuted,      setIsMuted]      = useState(false);
     const [ashDropped,   setAshDropped]   = useState(0);
     const [shareState,   setShareState]   = useState<'idle' | 'done' | 'copied'>('idle');
+    const [brand,        setBrand]        = useState<Brand>('marlboro');
 
     /* burn state refs */
+    const brandRef       = useRef<Brand>('marlboro');
     const burnedRef      = useRef(0);
     const bpRef          = useRef(0);
     const isActiveRef    = useRef(false);
@@ -124,50 +133,26 @@ export default function SmokingContent() {
         crackleGainRef.current = gain;
     }, []);
 
-    /* 치이익 — short sizzle/inhale burst */
-    const playInhale = useCallback((ctx: AudioContext) => {
+    /* 치이익 — cigarette sizzle MP3 */
+    const playInhale = useCallback(() => {
         if (mutedRef.current) return;
-        const now = ctx.currentTime;
-        const dur = 0.13 + Math.random() * 0.07;
-        const len = Math.floor(ctx.sampleRate * dur);
-        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-        const d   = buf.getChannelData(0);
-        for (let i = 0; i < len; i++) {
-            const t   = i / ctx.sampleRate;
-            const env = (1 - Math.exp(-t * 160)) * Math.exp(-t * 20);
-            d[i] = (Math.random() * 2 - 1) * env;
-        }
-        const src = ctx.createBufferSource(); src.buffer = buf;
-        const bp  = ctx.createBiquadFilter();
-        bp.type = 'bandpass'; bp.frequency.value = 3800 + Math.random() * 600; bp.Q.value = 0.75;
-        const hs  = ctx.createBiquadFilter();
-        hs.type = 'highshelf'; hs.frequency.value = 5200; hs.gain.value = 7;
-        const g   = ctx.createGain(); g.gain.value = 0.60;
-        src.connect(bp); bp.connect(hs); hs.connect(g); g.connect(ctx.destination);
-        src.start(now);
+        try {
+            const audio = new Audio('/sounds/cigarette-sizzle.mp3');
+            audio.volume = 0.85;
+            audio.play().catch(() => {});
+        } catch { /* unsupported */ }
     }, []);
 
-    /* 후- — soft breath exhale */
-    const playExhale = useCallback((ctx: AudioContext) => {
-        if (mutedRef.current) return;
-        const now = ctx.currentTime;
-        const dur = 0.55;
-        const len = Math.floor(ctx.sampleRate * dur);
-        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-        const d   = buf.getChannelData(0);
-        for (let i = 0; i < len; i++) {
-            const t   = i / ctx.sampleRate;
-            const env = Math.min(t / 0.04, 1) * Math.exp(-t * 4.8);
-            d[i] = (Math.random() * 2 - 1) * env;
-        }
-        const src = ctx.createBufferSource(); src.buffer = buf;
-        const lp  = ctx.createBiquadFilter();
-        lp.type = 'lowpass'; lp.frequency.value = 700;
-        const bp  = ctx.createBiquadFilter();
-        bp.type = 'bandpass'; bp.frequency.value = 320; bp.Q.value = 0.5;
-        const g   = ctx.createGain(); g.gain.value = 0.45;
-        src.connect(lp); lp.connect(bp); bp.connect(g); g.connect(ctx.destination);
-        src.start(now);
+    /* 후우우 — breath exhale MP3, 0.5s after release */
+    const playExhale = useCallback(() => {
+        setTimeout(() => {
+            if (mutedRef.current) return;
+            try {
+                const audio = new Audio('/sounds/cigarette-exhale.mp3');
+                audio.volume = 0.55;
+                audio.play().catch(() => {});
+            } catch { /* unsupported */ }
+        }, 500);
     }, []);
 
     /* ── Burn tick ─────────────────────────────────────── */
@@ -176,19 +161,21 @@ export default function SmokingContent() {
         if (lastBurnTsRef.current === 0) lastBurnTsRef.current = ts;
         const dt = Math.min((ts - lastBurnTsRef.current) / 1000, 0.08);
         lastBurnTsRef.current = ts;
-        burnedRef.current = Math.min(burnedRef.current + dt, TOTAL_BURN_SECONDS);
-        const p = burnedRef.current / TOTAL_BURN_SECONDS;
-        bpRef.current = p;
-        setBurnProgress(p);
-        if (p >= 1) {
-            isDoneRef.current  = true;
-            isActiveRef.current = false;
-            setIsDone(true);
-            setIsActive(false);
-            if (crackleGainRef.current && audioCtxRef.current) {
-                crackleGainRef.current.gain.setTargetAtTime(0, audioCtxRef.current.currentTime, 0.12);
+        if (brandRef.current !== 'electronic') {
+            burnedRef.current = Math.min(burnedRef.current + dt, TOTAL_BURN_SECONDS);
+            const p = burnedRef.current / TOTAL_BURN_SECONDS;
+            bpRef.current = p;
+            setBurnProgress(p);
+            if (p >= 1) {
+                isDoneRef.current  = true;
+                isActiveRef.current = false;
+                setIsDone(true);
+                setIsActive(false);
+                if (crackleGainRef.current && audioCtxRef.current) {
+                    crackleGainRef.current.gain.setTargetAtTime(0, audioCtxRef.current.currentTime, 0.12);
+                }
+                return;
             }
-            return;
         }
         burnRafRef.current = requestAnimationFrame(burnTick);
     }, []);
@@ -201,9 +188,9 @@ export default function SmokingContent() {
         const ctx = getCtx();
         if (ctx) {
             setupCrackle(ctx);
-            playInhale(ctx);
             crackleGainRef.current?.gain.setTargetAtTime(0.18, ctx.currentTime, 0.05);
         }
+        playInhale();
 
         isActiveRef.current = true;
         setIsActive(true);
@@ -219,9 +206,9 @@ export default function SmokingContent() {
 
         const ctx = audioCtxRef.current;
         if (ctx) {
-            playExhale(ctx);
             crackleGainRef.current?.gain.setTargetAtTime(0, ctx.currentTime, 0.15);
         }
+        playExhale();
     }, [playExhale]);
 
     /* ── Keyboard ──────────────────────────────────────── */
@@ -255,6 +242,12 @@ export default function SmokingContent() {
             0, audioCtxRef.current?.currentTime ?? 0, 0.1
         );
     }, []);
+
+    const changeBrand = useCallback((id: Brand) => {
+        setBrand(id);
+        brandRef.current = id;
+        reset();
+    }, [reset]);
 
     /* ── Share ─────────────────────────────────────────── */
     const handleShare = useCallback(async () => {
@@ -339,6 +332,7 @@ export default function SmokingContent() {
             const drop = 18 + Math.random() * 10;
             ashDroppedRef.current += drop;
             setAshDropped(ashDroppedRef.current);
+            if (brandRef.current === 'electronic') return;
             ashDropLockRef.current = true;
             setTimeout(() => { ashDropLockRef.current = false; }, 1800);
         };
@@ -361,13 +355,13 @@ export default function SmokingContent() {
             /* Cigarette world coords */
             const cigTopY = canvas.height / 2 - CIGA_TOTAL / 2;
             const ashH    = BODY_H * bpRef.current;
-            const dispAsh = Math.max(0, ashH - ashDroppedRef.current);
             const emberX  = canvas.width / 2;
-            const emberY  = cigTopY + dispAsh;
+            const emberY  = cigTopY + ashH; // ember always at current burn front
+            const dispAsh = Math.max(0, ashH - ashDroppedRef.current);
 
             /* Ember ambient glow */
             if (isActiveRef.current && !isDoneRef.current) {
-                const gr = ctx.createRadialGradient(emberX, emberY + EMBER_H, 0, emberX, emberY + EMBER_H, 180);
+                const gr = ctx.createRadialGradient(emberX, emberY, 0, emberX, emberY, 180);
                 gr.addColorStop(0,   'rgba(255,130,15,0.11)');
                 gr.addColorStop(0.5, 'rgba(255,70,0,0.055)');
                 gr.addColorStop(1,   'rgba(255,30,0,0)');
@@ -378,14 +372,15 @@ export default function SmokingContent() {
             /* Ash drop trigger */
             if (isActiveRef.current && !isDoneRef.current && !ashDropLockRef.current) {
                 if (dispAsh >= ASH_DROP_TRIGGER && Math.random() < 0.28 * dt) {
-                    triggerAshDrop(emberX, cigTopY + dispAsh);
+                    triggerAshDrop(emberX, emberY);
                 }
             }
 
             /* Spawn smoke particles */
             if (!isDoneRef.current) {
                 const active    = isActiveRef.current;
-                const spawnRate = active ? 7 : 0.5;
+                const isElec    = brandRef.current === 'electronic';
+                const spawnRate = active ? (isElec ? 28 : 7) : 0.5;
                 spawnAccRef.current += spawnRate * dt;
                 while (spawnAccRef.current >= 1) {
                     spawnParticle(emberX, emberY, active);
@@ -499,6 +494,30 @@ export default function SmokingContent() {
                 </div>
             )}
 
+            {/* Brand Selector */}
+            <div className="absolute bottom-10 flex gap-2 px-4 py-2 rounded-2xl border"
+                style={{
+                    zIndex: 30,
+                    background: 'rgba(0,0,0,0.4)',
+                    borderColor: 'rgba(234,88,12,0.15)',
+                    backdropFilter: 'blur(8px)',
+                }}>
+                {BRANDS.map(b => (
+                    <button
+                        key={b.id}
+                        onClick={(e) => { e.stopPropagation(); changeBrand(b.id); }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold transition-all"
+                        style={{
+                            background: brand === b.id ? b.color : 'transparent',
+                            color: brand === b.id ? '#fff' : 'rgba(255,255,255,0.4)',
+                            boxShadow: brand === b.id ? `0 0 12px ${b.color}44` : 'none',
+                        }}
+                    >
+                        {b.label}
+                    </button>
+                ))}
+            </div>
+
             {/* Mute button */}
             {!isDone && (
                 <button
@@ -525,9 +544,9 @@ export default function SmokingContent() {
             }}>
 
                 {/* Ash */}
-                {displayAshH > 1.5 && (
+                {brand !== 'electronic' && displayAshH > 1.5 && (
                     <div style={{
-                        position: 'absolute', top: 0,
+                        position: 'absolute', top: Math.max(0, (BODY_H * burnProgress) - displayAshH),
                         left: '50%', transform: 'translateX(-50%)',
                         width: CIGA_W - 5, height: displayAshH,
                         background: 'linear-gradient(to bottom, #d0d0c8 0%, #bbbbb2 30%, #a8a8a0 62%, #969690 100%)',
@@ -536,22 +555,24 @@ export default function SmokingContent() {
                     }} />
                 )}
 
-                {/* Ember */}
-                <div style={{
-                    position: 'absolute', top: displayAshH, left: 0,
-                    width: CIGA_W, height: EMBER_H, borderRadius: '2px',
-                    background: isActive
-                        ? 'radial-gradient(ellipse 88% 68% at 50% 38%, #ffee44 0%, #ffaa00 26%, #ff5500 54%, #991100 80%, transparent)'
-                        : 'radial-gradient(ellipse 72% 60% at 50% 52%, #ff8800 0%, #dd4400 46%, rgba(58,5,0,0.75) 100%)',
-                    boxShadow: isActive
-                        ? '0 0 10px 4px rgba(255,128,0,0.88), 0 0 24px 10px rgba(255,58,0,0.52), 0 0 48px 20px rgba(255,28,0,0.16)'
-                        : '0 0 5px 2px rgba(210,80,0,0.58)',
-                    animation: isActive ? 'flamePulse 0.2s ease-in-out infinite alternate' : undefined,
-                    zIndex: 3,
-                }} />
+                {/* Ember / LED (Not used for electronic anymore, it uses power button) */}
+                {brand !== 'electronic' && (
+                    <div style={{
+                        position: 'absolute', top: BODY_H * burnProgress, left: 0,
+                        width: CIGA_W, height: EMBER_H, borderRadius: '2px',
+                        background: isActive
+                            ? 'radial-gradient(ellipse 88% 68% at 50% 38%, #ffee44 0%, #ffaa00 26%, #ff5500 54%, #991100 80%, transparent)'
+                            : 'radial-gradient(ellipse 72% 60% at 50% 52%, #ff8800 0%, #dd4400 46%, rgba(58,5,0,0.75) 100%)',
+                        boxShadow: isActive
+                            ? '0 0 10px 4px rgba(255,128,0,0.88), 0 0 24px 10px rgba(255,58,0,0.52), 0 0 48px 20px rgba(255,28,0,0.16)'
+                            : '0 0 5px 2px rgba(210,80,0,0.58)',
+                        animation: isActive ? 'flamePulse 0.2s ease-in-out infinite alternate' : undefined,
+                        zIndex: 3,
+                    }} />
+                )}
 
-                {/* Tobacco body */}
-                {remainingBodyH > 0 && (
+                {/* Tobacco body / Electronic Body */}
+                {brand !== 'electronic' && remainingBodyH > 0 && (
                     <div style={{
                         position: 'absolute', top: BODY_H * burnProgress + EMBER_H,
                         left: 0, width: CIGA_W, height: Math.max(0, remainingBodyH),
@@ -565,26 +586,69 @@ export default function SmokingContent() {
                     </div>
                 )}
 
-                {/* Gold band */}
-                <div style={{
-                    position: 'absolute', top: BAND_TOP, left: 0, width: CIGA_W, height: BAND_H,
-                    background: 'linear-gradient(to right, #8a7010 0%, #c8a012 18%, #e8c82a 35%, #f8e050 50%, #e8c82a 65%, #c8a012 82%, #8a7010 100%)',
-                }} />
-
-                {/* Cork filter */}
-                <div style={{
-                    position: 'absolute', top: FILTER_TOP, left: 0, width: CIGA_W, height: FILTER_H,
-                    background: 'linear-gradient(to right, #8A4A18 0%, #BE6E2C 18%, #D88848 35%, #E29058 50%, #D88848 65%, #BE6E2C 82%, #8A4A18 100%)',
-                    borderRadius: '0 0 5px 5px', overflow: 'hidden',
-                }}>
-                    {Array.from({ length: 17 }, (_, i) => (
-                        <div key={i} style={{
-                            position: 'absolute', top: `${(i / 16) * 88 + 3}%`, left: 1, right: 1, height: 0.65,
-                            background: `rgba(${i % 2 === 0 ? '52,16,2' : '215,155,78'}, 0.22)`,
+                {brand === 'electronic' && (
+                    <div style={{
+                        position: 'absolute', top: 30, // Pushed down from the drip tip
+                        left: -CIGA_W / 2, width: CIGA_W * 2, height: BODY_H - 10,
+                        background: 'linear-gradient(135deg, #1f2937 0%, #374151 50%, #1f2937 100%)',
+                        border: '1px solid #111827',
+                        borderRadius: '8px',
+                        boxShadow: 'inset 0 0 15px rgba(0,0,0,0.5), 5px 5px 20px rgba(0,0,0,0.4)',
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                        {/* Power Button */}
+                        <div style={{
+                            width: 24, height: 24, borderRadius: '50%',
+                            background: isActive ? '#10b981' : '#374151',
+                            border: '2px solid #111827',
+                            boxShadow: isActive
+                                ? '0 0 15px 4px rgba(16,185,129,0.8), 0 0 30px rgba(16,185,129,0.4)'
+                                : 'inset 0 0 5px rgba(0,0,0,0.5)',
+                            transition: 'all 0.15s ease-out',
                         }} />
-                    ))}
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 7, background: 'rgba(65,22,4,0.28)', borderRadius: '0 0 5px 5px' }} />
-                </div>
+                        <div style={{ marginTop: 8, width: 20, height: 2, background: 'rgba(255,255,255,0.1)', borderRadius: 1 }} />
+                    </div>
+                )}
+                
+                {brand === 'electronic' && (
+                    /* Drip Tip (Mouthpiece) */
+                    <div style={{
+                        position: 'absolute', top: 0, left: CIGA_W / 4,
+                        width: CIGA_W / 2, height: 30,
+                        background: 'linear-gradient(to right, #000 0%, #333 50%, #000 100%)',
+                        borderRadius: '4px 4px 0 0',
+                    }} />
+                )}
+                {/* Gold band / Accent band (Not for electronic anymore) */}
+                {brand !== 'electronic' && (
+                    <div style={{
+                        position: 'absolute', top: BAND_TOP, left: 0, width: CIGA_W, height: BAND_H,
+                        background: brand === 'mild-seven'
+                            ? 'linear-gradient(to right, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%)'
+                            : 'linear-gradient(to right, #8a7010 0%, #c8a012 18%, #e8c82a 35%, #f8e050 50%, #e8c82a 65%, #c8a012 82%, #8a7010 100%)',
+                    }} />
+                )}
+
+                {/* Cork filter / Grip (Not for electronic anymore) */}
+                {brand !== 'electronic' && (
+                    <div style={{
+                        position: 'absolute', top: FILTER_TOP, left: 0, width: CIGA_W, height: FILTER_H,
+                        background: brand === 'mild-seven'
+                            ? 'linear-gradient(to right, #c0c0c0 0%, #f0f0f0 50%, #c0c0c0 100%)'
+                            : 'linear-gradient(to right, #8A4A18 0%, #BE6E2C 18%, #D88848 35%, #E29058 50%, #D88848 65%, #BE6E2C 82%, #8A4A18 100%)',
+                        borderRadius: '0 0 5px 5px', overflow: 'hidden',
+                    }}>
+                        {Array.from({ length: 17 }, (_, i) => (
+                            <div key={i} style={{
+                                position: 'absolute', top: `${(i / 16) * 88 + 3}%`, left: 1, right: 1, height: 0.65,
+                                background: brand === 'mild-seven'
+                                    ? `rgba(100, 150, 255, 0.1)`
+                                    : `rgba(${i % 2 === 0 ? '52,16,2' : '215,155,78'}, 0.22)`,
+                            }} />
+                        ))}
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 7, background: 'rgba(65,22,4,0.28)', borderRadius: '0 0 5px 5px' }} />
+                    </div>
+                )}
             </div>
 
             {/* Done overlay */}

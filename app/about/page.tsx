@@ -43,9 +43,10 @@ export default function AboutPage() {
 
                 {/* Hero */}
                 <div className="space-y-4">
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter italic uppercase leading-none">
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter italic uppercase leading-none pb-4">
                         <span className="text-white">정신</span>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600">수양</span>
+                        <span className="inline-block text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600"
+                            style={{ paddingBottom: '0.2em' }}>수양</span>
                     </h1>
                     <p className="text-zinc-400 text-sm leading-relaxed max-w-md">
                         쓸데없는 일을 극도로 진지하게 만든 스트레스 해소 컬렉션.<br />

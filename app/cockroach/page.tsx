@@ -52,18 +52,12 @@ const RealisticCockroach = ({ isWiggling }: { isWiggling: boolean }) => {
       0%,100%{ transform:translate(0,0); }
       50%   { transform:translate(0,0.8px); }
     }
-    @keyframes eyeGlint {
-      0%,80%,100%{ opacity:1; }
-      88%   { opacity:0.2; }
-      94%   { opacity:1; }
-    }
     .leg-spasm     { animation:legSpasm 0.040s ease-in-out infinite; }
     .antenna-sway  { animation:antennaSway 3.2s ease-in-out infinite; }
     .antenna-sway2 { animation:antennaSway 3.2s ease-in-out infinite 1.6s; }
     .antenna-thrash{ animation:antennaThrash 0.030s linear infinite; }
     .body-convulse { animation:bodyConvulse 0.044s ease-in-out infinite; }
     .idle-breath   { animation:idleBreath 3.5s ease-in-out infinite; }
-    .eye-glint     { animation:eyeGlint 6s ease-in-out infinite; }
     `;
 
     return (
@@ -83,54 +77,11 @@ const RealisticCockroach = ({ isWiggling }: { isWiggling: boolean }) => {
             <svg viewBox="0 0 200 310" className="w-full h-full relative z-10"
                 style={{ filter: 'drop-shadow(0 12px 32px rgba(0,0,0,0.98)) drop-shadow(0 0 8px rgba(80,20,0,0.4))' }}>
                 <defs>
-                    {/* Body — dark mottled brown */}
-                    <radialGradient id="ck-body" cx="36%" cy="28%" r="72%">
-                        <stop offset="0%"   stopColor="#B84A20" />
-                        <stop offset="18%"  stopColor="#7A2E12" />
-                        <stop offset="42%"  stopColor="#3E1408" />
-                        <stop offset="68%"  stopColor="#200A04" />
-                        <stop offset="100%" stopColor="#080200" />
-                    </radialGradient>
-                    {/* Pronotum — slightly redder */}
-                    <radialGradient id="ck-pronot" cx="40%" cy="25%" r="74%">
-                        <stop offset="0%"   stopColor="#A84018" />
-                        <stop offset="40%"  stopColor="#6A2608" />
-                        <stop offset="100%" stopColor="#180602" />
-                    </radialGradient>
-                    {/* Head */}
-                    <radialGradient id="ck-head" cx="38%" cy="33%" r="66%">
-                        <stop offset="0%"   stopColor="#4A1C0C" />
-                        <stop offset="100%" stopColor="#080402" />
-                    </radialGradient>
                     {/* Leg */}
                     <linearGradient id="ck-leg" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%"   stopColor="#5A2408" />
                         <stop offset="100%" stopColor="#080200" />
                     </linearGradient>
-                    {/* Compound eye — dark with iridescent green tint */}
-                    <radialGradient id="ck-eye" cx="35%" cy="30%" r="68%">
-                        <stop offset="0%"   stopColor="#1A4028" />
-                        <stop offset="45%"  stopColor="#0C2018" />
-                        <stop offset="100%" stopColor="#030C08" />
-                    </radialGradient>
-                    {/* Oily/waxy chitin sheen */}
-                    <linearGradient id="ck-sheen" x1="8%" y1="0%" x2="55%" y2="100%">
-                        <stop offset="0%"   stopColor="rgba(255,215,150,0.22)" />
-                        <stop offset="40%"  stopColor="rgba(255,195,120,0.08)" />
-                        <stop offset="100%" stopColor="rgba(255,195,120,0)" />
-                    </linearGradient>
-                    {/* Cerci */}
-                    <linearGradient id="ck-cerci" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%"   stopColor="#5A2208" />
-                        <stop offset="100%" stopColor="#140602" />
-                    </linearGradient>
-                    {/* Grime filter */}
-                    <filter id="grime">
-                        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="8" result="noise" />
-                        <feColorMatrix type="saturate" values="0" in="noise" result="gray" />
-                        <feBlend in="SourceGraphic" in2="gray" mode="multiply" result="blend" />
-                        <feComposite in="blend" in2="SourceGraphic" operator="in" />
-                    </filter>
                 </defs>
 
                 {/* ── IDLE BREATH wrapper ── */}
@@ -251,161 +202,16 @@ const RealisticCockroach = ({ isWiggling }: { isWiggling: boolean }) => {
                     <path d="M202  56  Q 197  53, 194  49"  stroke="#1A0602" strokeWidth="1.1" fill="none" strokeLinecap="round" />
                 </g>
 
-                {/* ════ ABDOMEN ════ */}
-                {/* Base body shape */}
-                <ellipse cx="100" cy="186" rx="47" ry="92" fill="url(#ck-body)" />
-
-                {/* Mottled dark patches — grime & uneven coloring */}
-                <ellipse cx="88"  cy="155" rx="13" ry="19" fill="rgba(12,3,1,0.55)" transform="rotate(-8,88,155)" />
-                <ellipse cx="116" cy="178" rx="11" ry="16" fill="rgba(12,3,1,0.50)" transform="rotate(10,116,178)" />
-                <ellipse cx="86"  cy="210" rx="10" ry="14" fill="rgba(12,3,1,0.45)" transform="rotate(-6,86,210)" />
-                <ellipse cx="114" cy="232" rx="9"  ry="12" fill="rgba(12,3,1,0.40)" transform="rotate(8,114,232)" />
-                <ellipse cx="98"  cy="248" rx="8"  ry="10" fill="rgba(12,3,1,0.35)" />
-                {/* Yellowish-brown discolouration patches */}
-                <ellipse cx="78"  cy="172" rx="6"  ry="10" fill="rgba(130,60,10,0.18)" transform="rotate(-12,78,172)" />
-                <ellipse cx="122" cy="200" rx="5"  ry="8"  fill="rgba(130,60,10,0.16)" transform="rotate(14,122,200)" />
-
-                {/* Tergite segment lines — pronounced */}
-                <path d="M56 160 Q 100 155, 144 160" stroke="#0C0402" strokeWidth="1.6" fill="none" opacity="0.85" />
-                <path d="M53 180 Q 100 175, 147 180" stroke="#0C0402" strokeWidth="1.5" fill="none" opacity="0.82" />
-                <path d="M54 200 Q 100 195, 146 200" stroke="#0C0402" strokeWidth="1.4" fill="none" opacity="0.78" />
-                <path d="M57 219 Q 100 215, 143 219" stroke="#0C0402" strokeWidth="1.3" fill="none" opacity="0.72" />
-                <path d="M62 237 Q 100 233, 138 237" stroke="#0C0402" strokeWidth="1.2" fill="none" opacity="0.60" />
-                <path d="M70 252 Q 100 249, 130 252" stroke="#0C0402" strokeWidth="1.0" fill="none" opacity="0.45" />
-
-                {/* Lateral tergite notches */}
-                <circle cx="56"  cy="160" r="2.0" fill="#0A0302" opacity="0.7" />
-                <circle cx="144" cy="160" r="2.0" fill="#0A0302" opacity="0.7" />
-                <circle cx="53"  cy="180" r="1.8" fill="#0A0302" opacity="0.65" />
-                <circle cx="147" cy="180" r="1.8" fill="#0A0302" opacity="0.65" />
-                <circle cx="54"  cy="200" r="1.6" fill="#0A0302" opacity="0.60" />
-                <circle cx="146" cy="200" r="1.6" fill="#0A0302" opacity="0.60" />
-
-                {/* Wing median cleft */}
-                <line x1="100" y1="118" x2="100" y2="268" stroke="#0A0302" strokeWidth="2.4" opacity="0.80" />
-
-                {/* Wing venation – left (more detailed) */}
-                <path d="M100 128 L 83 148 L 66 176 L 62 208 L 64 232" stroke="#0A0302" strokeWidth="1.1" fill="none" opacity="0.58" />
-                <path d="M100 144 L 79 168 L 62 200"                    stroke="#0A0302" strokeWidth="0.9" fill="none" opacity="0.44" />
-                <path d="M100 162 L 75 184 L 61 220"                    stroke="#0A0302" strokeWidth="0.8" fill="none" opacity="0.38" />
-                <path d="M100 180 L 72 200 L 62 232"                    stroke="#0A0302" strokeWidth="0.7" fill="none" opacity="0.30" />
-                <line x1="80" y1="156" x2="85"  y2="164" stroke="#0A0302" strokeWidth="0.7" opacity="0.38" />
-                <line x1="73" y1="177" x2="77"  y2="186" stroke="#0A0302" strokeWidth="0.6" opacity="0.33" />
-                <line x1="69" y1="199" x2="72"  y2="209" stroke="#0A0302" strokeWidth="0.6" opacity="0.28" />
-                <line x1="67" y1="219" x2="70"  y2="228" stroke="#0A0302" strokeWidth="0.5" opacity="0.24" />
-                {/* Wing venation – right */}
-                <path d="M100 128 L 117 148 L 134 176 L 138 208 L 136 232" stroke="#0A0302" strokeWidth="1.1" fill="none" opacity="0.58" />
-                <path d="M100 144 L 121 168 L 138 200"                     stroke="#0A0302" strokeWidth="0.9" fill="none" opacity="0.44" />
-                <path d="M100 162 L 125 184 L 139 220"                     stroke="#0A0302" strokeWidth="0.8" fill="none" opacity="0.38" />
-                <path d="M100 180 L 128 200 L 138 232"                     stroke="#0A0302" strokeWidth="0.7" fill="none" opacity="0.30" />
-                <line x1="120" y1="156" x2="115" y2="164" stroke="#0A0302" strokeWidth="0.7" opacity="0.38" />
-                <line x1="127" y1="177" x2="123" y2="186" stroke="#0A0302" strokeWidth="0.6" opacity="0.33" />
-                <line x1="131" y1="199" x2="128" y2="209" stroke="#0A0302" strokeWidth="0.6" opacity="0.28" />
-                <line x1="133" y1="219" x2="130" y2="228" stroke="#0A0302" strokeWidth="0.5" opacity="0.24" />
-
-                {/* Oily chitin sheen patches */}
-                <ellipse cx="83"  cy="162" rx="17" ry="36" fill="url(#ck-sheen)" />
-                <ellipse cx="108" cy="195" rx="11" ry="24" fill="url(#ck-sheen)" opacity="0.5" />
-
-                {/* Body setae (micro-hairs along abdominal margins) */}
-                {[160,170,180,190,200,210,220,230,240].map((y, i) => (
-                    <g key={i}>
-                        <line x1={55 - i * 0.4} y1={y} x2={52 - i * 0.4} y2={y - 3} stroke="#3A1008" strokeWidth="0.7" opacity="0.65" />
-                        <line x1={145 + i * 0.4} y1={y} x2={148 + i * 0.4} y2={y - 3} stroke="#3A1008" strokeWidth="0.7" opacity="0.65" />
-                    </g>
-                ))}
-
-                {/* Cerci — longer, more segmented */}
-                <path d="M86 266 Q 76 278, 70 289"  stroke="url(#ck-cerci)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                <path d="M70 289 Q 64 297, 62 305"  stroke="url(#ck-cerci)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-                <path d="M62 305 Q 59 309, 58 313"  stroke="url(#ck-cerci)" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-                <path d="M114 266 Q 124 278, 130 289" stroke="url(#ck-cerci)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                <path d="M130 289 Q 136 297, 138 305" stroke="url(#ck-cerci)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-                <path d="M138 305 Q 141 309, 142 313" stroke="url(#ck-cerci)" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-                {/* cerci setae */}
-                {[279,289,297].map((y, i) => (
-                    <g key={i}>
-                        <line x1={68 - i} y1={y} x2={65 - i} y2={y + 3}  stroke="#3A1008" strokeWidth="1.0" />
-                        <line x1={132 + i} y1={y} x2={135 + i} y2={y + 3} stroke="#3A1008" strokeWidth="1.0" />
-                    </g>
-                ))}
-
-                {/* ════ PRONOTUM (shield plate) ════ */}
-                <path d="M56 108 Q 100 88, 144 108 L 138 142 Q 100 150, 62 142 Z" fill="url(#ck-pronot)" />
-                {/* Pale marginal band (American cockroach characteristic) */}
-                <path d="M56 108 Q 100 88, 144 108"  stroke="rgba(190,140,30,0.38)" strokeWidth="3" fill="none" />
-                <path d="M62 142 Q 100 150, 138 142"  stroke="rgba(190,140,30,0.28)" strokeWidth="2" fill="none" />
-                <path d="M56 108 L 62 142"             stroke="rgba(190,140,30,0.22)" strokeWidth="2" fill="none" />
-                <path d="M144 108 L 138 142"           stroke="rgba(190,140,30,0.22)" strokeWidth="2" fill="none" />
-                {/* Center dark blotch */}
-                <ellipse cx="100" cy="120" rx="20" ry="16" fill="rgba(10,3,1,0.50)" />
-                {/* Pronotal setae */}
-                <line x1="58"  y1="116" x2="55"  y2="112" stroke="#3A1008" strokeWidth="0.8" opacity="0.6" />
-                <line x1="62"  y1="128" x2="58"  y2="125" stroke="#3A1008" strokeWidth="0.8" opacity="0.6" />
-                <line x1="63"  y1="140" x2="59"  y2="137" stroke="#3A1008" strokeWidth="0.8" opacity="0.5" />
-                <line x1="142" y1="116" x2="145" y2="112" stroke="#3A1008" strokeWidth="0.8" opacity="0.6" />
-                <line x1="138" y1="128" x2="142" y2="125" stroke="#3A1008" strokeWidth="0.8" opacity="0.6" />
-                <line x1="137" y1="140" x2="141" y2="137" stroke="#3A1008" strokeWidth="0.8" opacity="0.5" />
-                {/* Pronotum gloss */}
-                <ellipse cx="86" cy="112" rx="20" ry="12" fill="url(#ck-sheen)" opacity="0.85" />
-                {/* mid notch */}
-                <line x1="100" y1="88" x2="100" y2="95" stroke="#080201" strokeWidth="1.0" opacity="0.6" />
-
-                {/* ════ HEAD ════ */}
-                <ellipse cx="100" cy="91" rx="18" ry="20" fill="url(#ck-head)" />
-                {/* Head texture */}
-                <ellipse cx="96"  cy="86" rx="6" ry="8" fill="rgba(8,2,0,0.4)" />
-                {/* Clypeus */}
-                <path d="M89 104 Q 100 110, 111 104 L 109 112 Q 100 116, 91 112 Z" fill="#2A0E06" opacity="0.8" />
-                {/* Labrum */}
-                <ellipse cx="100" cy="115" rx="7" ry="4" fill="#200A04" opacity="0.9" />
-
-                {/* Compound eyes — faceted, dark with green iridescence */}
-                {/* Left eye */}
-                <ellipse cx="86" cy="84" rx="8.5" ry="10.5" fill="#060302" />
-                <ellipse cx="86" cy="84" rx="7.5" ry="9.5"  fill="url(#ck-eye)" />
-                {/* Facet grid lines */}
-                <line x1="82" y1="78" x2="90" y2="90"   stroke="rgba(0,0,0,0.35)" strokeWidth="0.5" />
-                <line x1="78" y1="84" x2="94" y2="84"   stroke="rgba(0,0,0,0.35)" strokeWidth="0.5" />
-                <line x1="86" y1="74" x2="86" y2="94"   stroke="rgba(0,0,0,0.35)" strokeWidth="0.5" />
-                <line x1="79" y1="79" x2="93" y2="89"   stroke="rgba(0,0,0,0.25)" strokeWidth="0.4" />
-                <line x1="80" y1="89" x2="92" y2="79"   stroke="rgba(0,0,0,0.25)" strokeWidth="0.4" />
-                <ellipse cx="84"  cy="81" rx="3"  ry="3.5" fill="rgba(40,140,70,0.55)" className="eye-glint" />
-                <circle  cx="83"  cy="80" r="1.3"          fill="rgba(255,255,255,0.42)" />
-                <circle  cx="89"  cy="89" r="0.8"          fill="rgba(40,140,70,0.30)" />
-                {/* Right eye */}
-                <ellipse cx="114" cy="84" rx="8.5" ry="10.5" fill="#060302" />
-                <ellipse cx="114" cy="84" rx="7.5" ry="9.5"  fill="url(#ck-eye)" />
-                <line x1="110" y1="78" x2="118" y2="90"  stroke="rgba(0,0,0,0.35)" strokeWidth="0.5" />
-                <line x1="106" y1="84" x2="122" y2="84"  stroke="rgba(0,0,0,0.35)" strokeWidth="0.5" />
-                <line x1="114" y1="74" x2="114" y2="94"  stroke="rgba(0,0,0,0.35)" strokeWidth="0.5" />
-                <line x1="107" y1="79" x2="121" y2="89"  stroke="rgba(0,0,0,0.25)" strokeWidth="0.4" />
-                <line x1="108" y1="89" x2="120" y2="79"  stroke="rgba(0,0,0,0.25)" strokeWidth="0.4" />
-                <ellipse cx="112" cy="81" rx="3"  ry="3.5" fill="rgba(40,140,70,0.55)" className="eye-glint" />
-                <circle  cx="111" cy="80" r="1.3"          fill="rgba(255,255,255,0.42)" />
-                <circle  cx="117" cy="89" r="0.8"          fill="rgba(40,140,70,0.30)" />
-
-                {/* Mandibles — prominent, hooked */}
-                <path d="M92 114 Q 85 122, 81 130"   stroke="#200A04" strokeWidth="3.2" fill="none" strokeLinecap="round" />
-                <path d="M81 130 Q 78 136, 79 142"   stroke="#200A04" strokeWidth="2.3" fill="none" strokeLinecap="round" />
-                <path d="M79 142 Q 78 146, 81 148"   stroke="#180804" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-                <circle cx="81" cy="148" r="2.5" fill="#100602" />
-                <path d="M108 114 Q 115 122, 119 130" stroke="#200A04" strokeWidth="3.2" fill="none" strokeLinecap="round" />
-                <path d="M119 130 Q 122 136, 121 142" stroke="#200A04" strokeWidth="2.3" fill="none" strokeLinecap="round" />
-                <path d="M121 142 Q 122 146, 119 148" stroke="#180804" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-                <circle cx="119" cy="148" r="2.5" fill="#100602" />
-                {/* Mandible teeth */}
-                <path d="M80 136 Q 76 138, 75 141"   stroke="#180804" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <path d="M120 136 Q 124 138, 125 141" stroke="#180804" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-
-                {/* Maxillary palps */}
-                <path d="M88 118 Q 82 126, 79 132"   stroke="#2E1006" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <path d="M79 132 Q 77 136, 78 139"   stroke="#2E1006" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-                <path d="M112 118 Q 118 126, 121 132" stroke="#2E1006" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <path d="M121 132 Q 123 136, 122 139" stroke="#2E1006" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-                {/* Labial palps */}
-                <path d="M97 116 Q 94 122, 93 127"   stroke="#280E06" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-                <path d="M103 116 Q 106 122, 107 127" stroke="#280E06" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+                {/* ════ BODY IMAGE ════ */}
+                {/* x=11 centers body at 100 (display width 178), legs span x=66~134 aligns to ~31% from edges
+                // 바퀴벌레 크기
+                */}
+                <image
+                    href="/images/cockroach.png"
+                    x="-25" y="50"
+                    width="245" height="260"
+                    preserveAspectRatio="xMidYMid meet"
+                />
 
                 {/* ════ ANTENNAE — always moving ════ */}
                 <g
@@ -463,36 +269,9 @@ export default function CockroachPage() {
     const playScratching = useCallback(() => {
         if (mutedRef.current) return;
         try {
-            type Win = typeof window & { webkitAudioContext?: typeof AudioContext };
-            const AudioCtx = window.AudioContext || (window as Win).webkitAudioContext;
-            if (!AudioCtx) return;
-            const ctx = new AudioCtx();
-
-            const scratchBurst = (t: number, dur: number, gain: number, freq = 4200) => {
-                const len = Math.floor(ctx.sampleRate * dur);
-                const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-                const d = buf.getChannelData(0);
-                for (let i = 0; i < len; i++) {
-                    d[i] = (Math.random() * 2 - 1) * Math.sin((i / len) * Math.PI);
-                }
-                const src = ctx.createBufferSource();
-                src.buffer = buf;
-                const bp = ctx.createBiquadFilter();
-                bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 2.0;
-                const hp = ctx.createBiquadFilter();
-                hp.type = 'highpass'; hp.frequency.value = 1800;
-                const g = ctx.createGain();
-                g.gain.value = gain;
-                src.connect(bp); bp.connect(hp); hp.connect(g); g.connect(ctx.destination);
-                src.start(t);
-            };
-
-            const now = ctx.currentTime;
-            scratchBurst(now,        0.052, 0.72, 4400);
-            scratchBurst(now + 0.09, 0.062, 0.62, 3800);
-            scratchBurst(now + 0.18, 0.048, 0.52, 4600);
-            scratchBurst(now + 0.27, 0.058, 0.42, 4000);
-            setTimeout(() => ctx.close().catch(() => {}), 1200);
+            const audio = new Audio('/sounds/cockroach.mp3');
+            audio.volume = 0.8;
+            audio.play().catch(() => {});
         } catch { /* unsupported */ }
     }, []);
 

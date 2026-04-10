@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import * as THREE from 'three';
 
 /* ─── Background pool (Unsplash — free commercial license) ─ */
 const BACKGROUNDS = [
@@ -346,21 +347,99 @@ export default function SmashPage() {
     const rafRef   = useRef<number>(0);
     const shardsRef = useRef<Shard[]>([]);
 
+    /* ThreeJS Ref */
+    const threeRef = useRef<{
+        renderer: THREE.WebGLRenderer;
+        scene: THREE.Scene;
+        camera: THREE.PerspectiveCamera;
+        hammer: THREE.Group;
+        pivot: THREE.Group;
+    } | null>(null);
+
+    const hitQueueRef = useRef<{ x: number, y: number }[]>([]);
+
     useEffect(() => {
         setBgIdx(Math.floor(Math.random() * BACKGROUNDS.length));
         const onFull = () => setIsFull(!!document.fullscreenElement);
         document.addEventListener('fullscreenchange', onFull);
-        return () => document.removeEventListener('fullscreenchange', onFull);
+
+        /* ThreeJS Setup */
+        if (!containerRef.current) return;
+        const container = containerRef.current;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
+        camera.position.z = 800;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        renderer.domElement.style.pointerEvents = 'none';
+        renderer.domElement.style.zIndex = '15';
+        container.appendChild(renderer.domElement);
+
+        const amb = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(amb);
+        const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+        dir.position.set(5, 10, 7);
+        scene.add(dir);
+
+        // Hammer model
+        const hammerGroup = new THREE.Group();
+        const pivot = new THREE.Group();
+        
+        // Head
+        const headGeo = new THREE.BoxGeometry(60, 40, 40);
+        const headMat = new THREE.MeshStandardMaterial({ 
+            color: 0xaaaaaa, 
+            metalness: 0.9, 
+            roughness: 0.1,
+        });
+        const head = new THREE.Mesh(headGeo, headMat);
+        head.position.y = 80; // offset from pivot
+        hammerGroup.add(head);
+
+        // Handle
+        const handleGeo = new THREE.CylinderGeometry(6, 4, 160, 12);
+        const handleMat = new THREE.MeshStandardMaterial({ color: 0x3d2b1f, roughness: 0.8 });
+        const handle = new THREE.Mesh(handleGeo, handleMat);
+        handle.position.y = 0;
+        hammerGroup.add(handle);
+
+        pivot.add(hammerGroup);
+        pivot.position.z = -1000; // hide initially
+        scene.add(pivot);
+
+        threeRef.current = { renderer, scene, camera, hammer: hammerGroup, pivot };
+
+        const onResize = () => {
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        };
+        window.addEventListener('resize', onResize);
+
+        return () => {
+            document.removeEventListener('fullscreenchange', onFull);
+            window.removeEventListener('resize', onResize);
+            renderer.dispose();
+            container.removeChild(renderer.domElement);
+        };
     }, []);
 
     /* shard physics loop */
     useEffect(() => {
         shardsRef.current = shards;
-    }, [shards]);
-
-    useEffect(() => {
         const tick = () => {
-            const next = shardsRef.current
+            // physics parts
+            const nextShards = shardsRef.current
                 .map(s => ({
                     ...s,
                     x: s.x + s.vx,
@@ -371,32 +450,47 @@ export default function SmashPage() {
                     opacity: s.opacity - 0.012,
                 }))
                 .filter(s => s.opacity > 0 && s.y < (typeof window !== 'undefined' ? window.innerHeight + 80 : 1200));
-            setShards(next);
+            setShards(nextShards);
+
+            // ThreeJS loop
+            if (threeRef.current) {
+                const { renderer, scene, camera, pivot } = threeRef.current;
+
+                // Handle hit queue (delayed SVG effects)
+                if (hitQueueRef.current.length > 0) {
+                    const hit = hitQueueRef.current.shift()!;
+                    triggerVisualEffects(hit.x, hit.y);
+                }
+
+                if (pivot.userData.animating) {
+                    pivot.userData.time += 0.08;
+                    const t = pivot.userData.time;
+                    
+                    if (t < 1) {
+                        // Swing down
+                        pivot.rotation.x = -Math.PI/2 + (Math.PI/2 + 0.5) * Math.sin(t * Math.PI/2);
+                        pivot.position.z = 200 * (1-t);
+                    } else {
+                        // Swing back
+                        const t2 = (t - 1) * 2;
+                        pivot.position.z = -200 * t2;
+                        if (t2 >= 1) {
+                            pivot.userData.animating = false;
+                            pivot.position.z = -1000;
+                        }
+                    }
+                }
+
+                renderer.render(scene, camera);
+            }
+
             rafRef.current = requestAnimationFrame(tick);
         };
         rafRef.current = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(rafRef.current);
     }, []);
 
-    const handleSmash = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-        e.preventDefault();
-
-        if (!document.fullscreenElement && containerRef.current) {
-            containerRef.current.requestFullscreen().catch(() => {});
-        }
-
-        const clientX = 'touches' in e
-            ? (e as React.TouchEvent).touches[0]?.clientX ?? (e as React.TouchEvent).changedTouches[0]?.clientX
-            : (e as React.MouseEvent).clientX;
-        const clientY = 'touches' in e
-            ? (e as React.TouchEvent).touches[0]?.clientY ?? (e as React.TouchEvent).changedTouches[0]?.clientY
-            : (e as React.MouseEvent).clientY;
-
-        if (clientX === undefined || clientY === undefined) return;
-
-        // sound
-        playSmashSound(mutedRef.current);
-
+    const triggerVisualEffects = useCallback((clientX: number, clientY: number) => {
         // crack
         const newCrack: CrackGroup = {
             id: nextId.current++,
@@ -420,6 +514,55 @@ export default function SmashPage() {
         setShake(true);
         setTimeout(() => setShake(false), 90);
     }, []);
+
+    const handleSmash = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+        e.preventDefault();
+
+        if (!document.fullscreenElement && containerRef.current) {
+            containerRef.current.requestFullscreen().catch(() => {});
+        }
+
+        const clientX = 'touches' in e
+            ? (e as React.TouchEvent).touches[0]?.clientX ?? (e as React.TouchEvent).changedTouches[0]?.clientX
+            : (e as React.MouseEvent).clientX;
+        const clientY = 'touches' in e
+            ? (e as React.TouchEvent).touches[0]?.clientY ?? (e as React.TouchEvent).changedTouches[0]?.clientY
+            : (e as React.MouseEvent).clientY;
+
+        if (clientX === undefined || clientY === undefined) return;
+
+        // sound
+        playSmashSound(mutedRef.current);
+
+        // ThreeJS Hammer Animation
+        if (threeRef.current) {
+            const { pivot, camera } = threeRef.current;
+            
+            // Convert screen to world
+            const x = (clientX / window.innerWidth) * 2 - 1;
+            const y = -(clientY / window.innerHeight) * 2 + 1;
+            
+            const vector = new THREE.Vector3(x, y, 0.5);
+            vector.unproject(camera);
+            const dir = vector.sub(camera.position).normalize();
+            const distance = -camera.position.z / dir.z;
+            const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+
+            pivot.position.set(pos.x, pos.y + 60, 50);
+            pivot.rotation.x = -Math.PI / 2 - 0.5;
+            pivot.rotation.y = (Math.random() - 0.5) * 0.4;
+            pivot.userData.animating = true;
+            pivot.userData.time = 0;
+
+            // Queue the crack/shard effect for a slight delay (when hammer hits)
+            setTimeout(() => {
+                hitQueueRef.current.push({ x: clientX, y: clientY });
+            }, 80);
+        } else {
+            // Fallback if ThreeJS not ready
+            triggerVisualEffects(clientX, clientY);
+        }
+    }, [triggerVisualEffects]);
 
     const toggleMute = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
