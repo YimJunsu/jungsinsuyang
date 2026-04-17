@@ -5,7 +5,8 @@ import {
   Wind, Cigarette, Gauge, Music, CheckSquare,
   Terminal, Loader2, CircleDot, Orbit,
   Hammer, ChevronRight, Hourglass,
-  CloudRain, Zap, PawPrint, Bug
+  CloudRain, Zap, PawPrint, Bug, Monitor, Package, Snail,
+  Bird, Target
 } from 'lucide-react';
 
 const PAGES = [
@@ -22,6 +23,11 @@ const PAGES = [
   { href: '/sand', icon: Hourglass, title: '영겁의 모래시계', desc: '모래 구경하다 인생이 모래가 됨', bg: 'from-[#1a1a05] to-[#050505]', accent: '#d4af37' },
   { href: '/airconditioner', icon: Wind, title: '에어컨 ASMR 성지', desc: '전기세 걱정 없는 쿨함, 집주인 모름', bg: 'from-[#05161a] to-[#050505]', accent: '#06b6d4' },
   { href: '/loading', icon: Loader2, title: '행복 로딩 중...', desc: '곧 도착합니다 — 2019년부터 같은 말 중', bg: 'from-[#18181b] to-[#050505]', accent: '#71717a' },
+  { href: '/windowsupdate', icon: Monitor, title: '업데이트 하기', desc: '윈도우 업뎃 or 블루스크린 — 결과는 같음', bg: 'from-[#001a30] to-[#050505]', accent: '#0078D4' },
+  { href: '/delivery', icon: Package, title: '배송 확인', desc: '택배 시킨거 조회하기', bg: 'from-[#1a0800] to-[#050505]', accent: '#E30000' },
+  { href: '/snail', icon: Snail, title: '진짜로 느림', desc: '화면 가로지르는 데 10분', bg: 'from-[#071a02] to-[#050505]', accent: '#7fd020' },
+  { href: '/chicken', icon: Bird, title: '닭이 널 판단함', desc: '아무것도 안 했는데 고개 끄덕임 or 한숨 쉼', bg: 'from-[#1a1500] to-[#050505]', accent: '#fbbf24' },
+  { href: '/focus', icon: Target, title: '집중력 측정기', desc: '시작하자마자 광고, 알림, 유혹 등장', bg: 'from-[#1a0010] to-[#050505]', accent: '#f43f5e' },
 ] as const;
 
 export default function Home() {
@@ -40,7 +46,7 @@ export default function Home() {
             <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-600">수양</span>
           </h1>
           <p className="max-w-md mx-auto text-zinc-400 text-xs md:text-sm font-medium tracking-[0.1em] leading-relaxed uppercase">
-            의사도 몰랐던 13가지 스트레스 해소법.<br />
+            의사도 몰랐던 18가지 스트레스 해소법.<br />
             부작용: 시간 낭비, 무한 재방문.
           </p>
         </header>
