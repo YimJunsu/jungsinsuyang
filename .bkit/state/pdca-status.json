@@ -1,0 +1,451 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-04-17T09:32:15.949Z",
+  "activeFeatures": [
+    "cockroach",
+    "jungsinsuyang",
+    "about",
+    "windowsupdate",
+    "delivery",
+    "snail",
+    "chicken",
+    "focus"
+  ],
+  "primaryFeature": "cockroach",
+  "features": {
+    "cockroach": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-06T07:18:10.902Z",
+        "lastUpdated": "2026-04-08T09:30:36.266Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\cockroach\\page.tsx"
+    },
+    "jungsinsuyang": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-06T07:18:27.587Z",
+        "lastUpdated": "2026-04-15T07:47:50.353Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\page.tsx"
+    },
+    "about": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-10T04:08:29.914Z",
+        "lastUpdated": "2026-04-10T04:18:32.972Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\about\\page.tsx"
+    },
+    "windowsupdate": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T01:35:00.182Z",
+        "lastUpdated": "2026-04-14T02:59:53.580Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\windowsupdate\\page.tsx"
+    },
+    "delivery": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T03:15:44.072Z",
+        "lastUpdated": "2026-04-14T05:01:37.809Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\delivery\\page.tsx"
+    },
+    "snail": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T09:26:15.114Z",
+        "lastUpdated": "2026-04-17T09:30:58.268Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\snail\\page.tsx"
+    },
+    "chicken": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-15T07:58:06.320Z",
+        "lastUpdated": "2026-04-17T09:32:15.948Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\chicken\\page.tsx"
+    },
+    "focus": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-15T07:59:28.138Z",
+        "lastUpdated": "2026-04-17T09:30:20.662Z"
+      },
+      "lastFile": "D:\\per_Projects\\jungsinsuyang\\app\\focus\\page.tsx"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-04-06T05:17:42.935Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-04-17T09:32:15.949Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-06T07:18:10.902Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-06T07:18:27.587Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-06T07:18:57.166Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:07:46.612Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:08:13.758Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:09:32.434Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:10:04.811Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:16:00.251Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:26:44.957Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T09:30:36.266Z",
+      "feature": "cockroach",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T04:04:01.435Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T04:04:31.715Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T04:04:49.688Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T04:08:29.914Z",
+      "feature": "about",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T04:18:32.972Z",
+      "feature": "about",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T01:35:00.182Z",
+      "feature": "windowsupdate",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T01:35:10.310Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T01:35:26.329Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T01:35:47.012Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T02:59:53.581Z",
+      "feature": "windowsupdate",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T03:15:44.072Z",
+      "feature": "delivery",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T03:15:55.614Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T03:16:13.523Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T03:16:26.776Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T05:01:37.809Z",
+      "feature": "delivery",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:26:15.114Z",
+      "feature": "snail",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:31:15.121Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:31:30.673Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:31:43.884Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:32:13.703Z",
+      "feature": "snail",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T07:47:21.272Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T07:47:37.265Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T07:47:50.353Z",
+      "feature": "jungsinsuyang",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T07:58:06.320Z",
+      "feature": "chicken",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T07:59:28.138Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T08:00:01.597Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:27:50.147Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:27:55.359Z",
+      "feature": "snail",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:28:08.474Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:28:50.327Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:29:05.461Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:29:26.070Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:29:40.484Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:29:54.780Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:30:07.293Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:30:20.662Z",
+      "feature": "focus",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:30:44.521Z",
+      "feature": "snail",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:30:58.268Z",
+      "feature": "snail",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:31:14.816Z",
+      "feature": "chicken",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:31:29.126Z",
+      "feature": "chicken",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:31:45.107Z",
+      "feature": "chicken",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:31:58.693Z",
+      "feature": "chicken",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T09:32:15.948Z",
+      "feature": "chicken",
+      "phase": "do",
+      "action": "updated"
+    }
+  ]
+}
